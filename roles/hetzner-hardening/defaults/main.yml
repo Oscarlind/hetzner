@@ -1,5 +1,5 @@
 ---
-sshd_conf_dest: /etc/ssh/ssh_config.d/99-local.conf
+sshd_conf_dest: /etc/ssh/sshd_config
 jail_local: /etc/fail2ban/jail.local
 ssh_jail_local: /etc/fail2ban/jail.d/ssh-jail.local
 
