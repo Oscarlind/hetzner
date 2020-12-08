@@ -1,7 +1,7 @@
 ---
 sshd_conf_dest: /etc/ssh/ssh_config.d/99-local.conf
-jail-local: /etc/fail2ban/jail.local
-ssh-jail-local: /etc/fail2ban/jail.d/ssh-jail.local
+jail_local: /etc/fail2ban/jail.local
+ssh_jail_local: /etc/fail2ban/jail.d/ssh-jail.local
 
 users:
   - username: oscar

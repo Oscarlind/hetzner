@@ -1,0 +1,5 @@
+- name: Restarting sshd service
+  systemd:
+    state: restarted
+    daemon-reload: yes
+    name: sshd

@@ -33,13 +33,7 @@
     mode: 644
     owner: root
     group: root
-  
-- name: Restarting sshd service
-  systemd:
-    state: restarted
-    daemon-reload: yes
-    name: sshd
-
+  notify: Restarting sshd service
 
 - name: Installing fail2ban
   yum:
@@ -49,12 +43,12 @@
 - name: Configuring fail2ban
   template:
     src: jail.local.j2
-    dest: "{{ jail-local }}"
+    dest: "{{ jail_local }}"
 
 - name: Further configuring fail2ban
   template:
     src: ssh-jail.local.j2
-    dest: "{{ ssh-jail-local }}" 
+    dest: "{{ ssh_jail_local }}" 
 
 - name: Starting and enabling fail2ban
   systemd:
