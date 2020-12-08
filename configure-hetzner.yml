@@ -1,0 +1,6 @@
+---
+- name: Hardening the Hetzner server
+  hosts: hetzner
+  become: yes
+  roles:
+    - hetzner-hardening

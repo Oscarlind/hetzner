@@ -1,0 +1,63 @@
+---
+- name: Setting up local groups
+  group:
+    name: admin
+    state: present
+
+- name: Create local users
+  user:
+    name: "{{ item.username }}"
+    comment: Created by Ansible
+    group: admin
+  with_items: "{{ users }}"
+
+- name: Distribute ssh-key
+  authorized_key:
+      user: "{{ item.username }}"
+      key: "{{ lookup('file', '/{{ item.key }}') }}"
+      state: present
+  with_items: "{{ users }}"
+
+- name: Ensuring sudo permissions
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%admin ALL='
+    line: '%admin ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s' 
+
+- name: Configuring sshd
+  template:
+    src: 99-local.conf.j2
+    dest: "{{ sshd_conf_dest }}"
+    mode: 644
+    owner: root
+    group: root
+  
+- name: Restarting sshd service
+  systemd:
+    state: restarted
+    daemon-reload: yes
+    name: sshd
+
+
+- name: Installing fail2ban
+  yum:
+    name: fail2ban
+    state: present
+
+- name: Configuring fail2ban
+  template:
+    src: jail.local.j2
+    dest: "{{ jail-local }}"
+
+- name: Further configuring fail2ban
+  template:
+    src: ssh-jail.local.j2
+    dest: "{{ ssh-jail-local }}" 
+
+- name: Starting and enabling fail2ban
+  systemd:
+    state: started
+    enabled: yes
+    name: fail2ban

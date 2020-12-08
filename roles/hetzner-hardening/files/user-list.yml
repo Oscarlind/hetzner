@@ -1,0 +1,5 @@
+---
+users:
+  - username: oscar
+    key: /home/olindhol/.ssh/id_rsa.pub
+  - username: mille

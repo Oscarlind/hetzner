@@ -1,0 +1,4 @@
+### Custom sshd - created by Ansible ###
+AllowUsers {% for item in users %} {{ item.username }} {% endfor %} 
+PermitRootLogin no
+PasswordAuthentication no
