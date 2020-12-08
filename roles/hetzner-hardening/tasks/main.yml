@@ -27,12 +27,12 @@
     validate: '/usr/sbin/visudo -cf %s' 
 
 - name: Configuring sshd
-  template:
-    src: 99-local.conf.j2
-    dest: "{{ sshd_conf_dest }}"
-    mode: 644
-    owner: root
-    group: root
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Allowusers {% for item in users %} {{ item.username }} {% endfor %} 
+      PermitRootLogin no
+      PasswordAuthentication no
   notify: Restarting sshd service
 
 - name: Installing fail2ban
